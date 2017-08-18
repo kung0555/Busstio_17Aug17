@@ -38,11 +38,11 @@ public class loaddata extends AppCompatActivity {
         if (checkDatabase()) {
             //Have Database
             Log.d(tag, "Have Database");
-
+            checkNetAndUpdateSQLite(true);
         } else {
             //No Database
             Log.d(tag, "No Database");
-
+            checkNetAndUpdateSQLite(false);
         }
 
 //        //Check Internet
@@ -58,34 +58,53 @@ public class loaddata extends AppCompatActivity {
         //relode();
     }
 
-    private void refreshSQLite() {
-        if (databaseABoolean && internetABoolean) {
-            //Every Thing OK
-            try {
-
-                MyConstant myConstant = new MyConstant();
-                String[] urlStrings = new String[]{myConstant.getUrlJSON_BusStop(),
-                        myConstant.getUrlJSON_Bus(), myConstant.getUrlJSON_BusRoute()};
-
-                for (int i = 0; i < urlStrings.length; i += 1) {
-
-                    GetAllData getAllData = new GetAllData(loaddata.this);
-                    getAllData.execute(urlStrings[i]);
-                    String strJSON = getAllData.get();
-                    Log.d("17AugV1", "JSoN ==> " + strJSON);
-
-                    myUpdateSQLite(i, strJSON);
-
-                }   // for
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+    private void checkNetAndUpdateSQLite(boolean statusHaveDatabase) {
+        String tag = "18AugV1";
+        if (checkInternet()) {
+            //Connected Internet OK
+            Log.d(tag, "Connected Internet OK");
+            refreshSQLite();
         } else {
-            // 95% No Internet
+            //Cannot Connected Internet Intent ==> Home.java
+            Log.d(tag, "Cannot Connected Internet Intent ==> Home.java");
+            if (statusHaveDatabase) {
+                //Have Old Data
+                Log.d(tag, "Have Old Data");
+                Intent intent = new Intent(loaddata.this, home.class);
+                startActivity(intent);
+                finish();
+            } else {
+                //Empty Data and No Internet ==> Load Data from Server
+                Log.d(tag, "Empty Data and No Internet ==> Load Data from Server");
+                Toast.makeText(loaddata.this, "ไม่สามารถทำงานได้", Toast.LENGTH_LONG).show();
+            }
         }
+    }
+
+    private void refreshSQLite() {
+
+        try {
+
+            MyConstant myConstant = new MyConstant();
+            String[] urlStrings = new String[]{myConstant.getUrlJSON_BusStop(),
+                    myConstant.getUrlJSON_Bus(), myConstant.getUrlJSON_BusRoute()};
+
+            for (int i = 0; i < urlStrings.length; i += 1) {
+
+                GetAllData getAllData = new GetAllData(loaddata.this);
+                getAllData.execute(urlStrings[i]);
+                String strJSON = getAllData.get();
+                Log.d("17AugV1", "JSoN ==> " + strJSON);
+
+                myUpdateSQLite(i, strJSON);
+
+            }   // for
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void myUpdateSQLite(int index, String strJSON) {
@@ -163,12 +182,12 @@ public class loaddata extends AppCompatActivity {
     }
 
     private boolean checkInternet() {
-        boolean result = false;
+        boolean result = false; // No Internet
         ConnectivityManager connectivityManager = (ConnectivityManager) loaddata.this.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
         if ((networkInfo != null) && (networkInfo.isConnected())) {
-            result  = true;
+            result  = true; // Have Internet
         }
         return result;
     }
