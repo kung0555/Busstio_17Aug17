@@ -41,6 +41,7 @@ public class home extends AppCompatActivity {
                     Log.d("toto", "gg" + CheckGPS());
                     Checkinternet();
                     Log.d("toto", "hh" + Checkinternet());
+
                 if(CheckGPS()==true&&Checkinternet()==true){
                 Intent intent = new Intent(this, input_online.class);
                 startActivity(intent);}

@@ -15,7 +15,7 @@
         tools:layout_editor_absoluteX="3dp"
         tools:layout_editor_absoluteY="16dp" />
 
-    <AutoCompleteTextView
+    <Button
         android:id="@+id/InputbusStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         tools:layout_editor_absoluteX="3dp"
         tools:layout_editor_absoluteY="125dp" />
 
-    <AutoCompleteTextView
+    <Button
         android:id="@+id/InputbusEnd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
