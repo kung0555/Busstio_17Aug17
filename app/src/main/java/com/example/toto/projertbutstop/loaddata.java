@@ -19,9 +19,6 @@ public class loaddata extends AppCompatActivity {
     private Handler handler;
     private Runnable runnable;
     private MyManage myManage;
-    private boolean databaseABoolean = true; // Have Data
-    private boolean internetABoolean = false; // Internet NOT OK
-
 
 
     @Override
@@ -45,17 +42,6 @@ public class loaddata extends AppCompatActivity {
             checkNetAndUpdateSQLite(false);
         }
 
-//        //Check Internet
-//        checkInternet();
-//
-//        //Check Special
-//        checkSpecial();
-
-
-        //Test Add Value
-        //testAddValue();
-
-        //relode();
     }
 
     private void checkNetAndUpdateSQLite(boolean statusHaveDatabase) {
@@ -180,18 +166,7 @@ public class loaddata extends AppCompatActivity {
 
     }
 
-    private void checkSpecial() {
-        if (databaseABoolean) {
-            //Have Data
-            refreshSQLite();
-        } else if (!internetABoolean) {
-            //No Data and Not Internet
-            Toast.makeText(loaddata.this, "Cannot Work beacuse no Data and Internet",
-                    Toast.LENGTH_LONG).show();
-        } else {
-            refreshSQLite();
-        }
-    }
+
 
     private boolean checkInternet() {
         boolean result = false; // No Internet
@@ -217,32 +192,8 @@ public class loaddata extends AppCompatActivity {
         return result;
     }
 
-    private void testAddValue() {
-        myManage.addBusStop("1", "123.00", "456.00", "NameBusStop");
-        myManage.addBus("1", "2", "bus_detail");
-        myManage.addBusRoute("1", "เข้าเมือง", "13", "BusDetail", "NameBus", "123.00", "456.00");
-    }
 
-    private void relode() {
-        handler = new Handler();
 
-        runnable = new Runnable() {
-            public void run() {
-                Intent intent = new Intent(loaddata.this, home.class);
-                startActivity(intent);
-                finish();
-            }
-        };
-    }
 
-    public void onResume() {
-        super.onResume();
-        //handler.postDelayed(runnable, 3000);
-    }
-
-    public void onStop() {
-        super.onStop();
-        //handler.removeCallbacks(runnable);
-    }
 
 }   // Main Class
