@@ -13,11 +13,14 @@ public class listbus_offline extends AppCompatActivity {
 
     private String startString, endString;
     private String[] numberBusStrings;
+    private ArrayList<String> myTrueNumberBusStringArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listbus_offline);
+
+        myTrueNumberBusStringArrayList = new ArrayList<String>();
 
         //GetValue Intent
         getValueIntent();
@@ -42,6 +45,7 @@ public class listbus_offline extends AppCompatActivity {
             stringArrayList.add(strNumberBusManyStrings[i]);
             cursor.moveToNext();
         }   //for
+        cursor.close();
 
         Log.d(tag, "stringArrayList ==> " + stringArrayList);
         Object[] objects = stringArrayList.toArray();
@@ -56,10 +60,38 @@ public class listbus_offline extends AppCompatActivity {
         numberBusStrings = stringArrayList.toArray(new String[0]);
         for (int i=0;i<numberBusStrings.length;i++) {
             Log.d(tag, "numbutBus[" + i + "] ==> " + numberBusStrings[i]);
-        }
+
+            inTownCheckBus(numberBusStrings[i], sqLiteDatabase);
+            outTownCheckBus(numberBusStrings[i], sqLiteDatabase);
+
+        }   // for
+
+        Log.d(tag, "รถที่วิ่งผ่านป้าย Start ==> " + myTrueNumberBusStringArrayList);
 
 
     }   // findNumberBus
+
+    private void outTownCheckBus(String numberBusString, SQLiteDatabase sqLiteDatabase) {
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM busrouteTABLE WHERE direction = 'ออกเมือง' AND bus = " + numberBusString, null);
+    }
+
+    private void inTownCheckBus(String numberBusString, SQLiteDatabase sqLiteDatabase) {
+
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM busrouteTABLE WHERE direction = 'เข้าเมือง' AND bus = " + numberBusString, null);
+        cursor.moveToFirst();
+
+        for (int i=0;i<cursor.getCount();i++) {
+
+            if (startString.equals(cursor.getString(4))) {
+                myTrueNumberBusStringArrayList.add(numberBusString);
+            }
+            cursor.moveToNext();
+
+        }   // for
+
+
+    }
+
 
     private void getValueIntent() {
         String tag = "18AugV4";
