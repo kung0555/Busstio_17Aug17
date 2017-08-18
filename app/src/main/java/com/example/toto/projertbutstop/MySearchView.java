@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 
@@ -46,6 +48,26 @@ public class MySearchView extends AppCompatActivity implements android.widget.Se
 
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
+
+
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("18AugV3", "You Click at i ==> " + i);
+               // String s = (String) adapterView.getItemAtPosition(i);
+                Log.d("18AugV3", "Item Click ==> " + (adapterView.getAdapter().getItem(i)).toString());
+
+//                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
+//                String busStop = cursor.getString(0);
+//                Log.d("18AugV3", "busStop ==> " + busStop);
+
+                AnimalNames s = adapter.getItem(i);
+                String test = s.getAnimalName();
+                Log.d("18AugV3", "s ==> " + test);
+
+            }
+        });
 
         // Locate the EditText in listview_main.xml
         editsearch = (android.widget.SearchView) findViewById(R.id.search);
@@ -91,6 +113,7 @@ public class MySearchView extends AppCompatActivity implements android.widget.Se
     @Override
     public boolean onQueryTextChange(String newText) {
         String text = newText;
+        Log.d("18AugV3", "text ==> " + text);
         adapter.filter(text);
         return false;
     }
