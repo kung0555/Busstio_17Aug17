@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 public class input_offline extends AppCompatActivity {
 
+    private String startString, endString;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,8 +24,31 @@ public class input_offline extends AppCompatActivity {
         //End Controller
         endController();
 
+        //OK Controller
+        OKController();
+
 
     }   // Main Method
+
+    private void OKController() {
+        Button button = (Button) findViewById(R.id.Ok);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Log.d("18AugV4", "Start ==> " + startString);
+                Log.d("18AugV4", "End ==> " + endString);
+
+                Intent intent = new Intent(input_offline.this, listbus_offline.class);
+                intent.putExtra("Start", startString);
+                intent.putExtra("End", endString);
+
+                startActivity(intent);
+
+
+            }   // onClick
+        });
+    }
 
     @Override
     protected void onActivityResult(int requestCode,
@@ -39,12 +64,14 @@ public class input_offline extends AppCompatActivity {
                 case 1000:
 
                     TextView textView = (TextView) findViewById(R.id.RecommendinputbusStart);
+                    startString = data.getStringExtra("BusStop");
                     textView.setText("ป้ายเริ่มต้น ค่ือ " + data.getStringExtra("BusStop"));
 
                     break;
                 case 1100:
 
                     TextView textView1 = (TextView) findViewById(R.id.RecommendinputbusEnd);
+                    endString = data.getStringExtra("BusStop");
                     textView1.setText("ป้ายจุดหมาย คือ " + data.getStringExtra("BusStop"));
 
                     break;
