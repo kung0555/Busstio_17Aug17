@@ -1,5 +1,6 @@
 package com.example.toto.projertbutstop;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -63,9 +64,13 @@ public class MySearchView extends AppCompatActivity implements android.widget.Se
 //                Log.d("18AugV3", "busStop ==> " + busStop);
 
                 AnimalNames s = adapter.getItem(i);
-                String test = s.getAnimalName();
-                Log.d("18AugV3", "s ==> " + test);
+                String strBusStop = s.getAnimalName();
+                Log.d("18AugV3", "s ==> " + strBusStop);
 
+                Intent intent = new Intent(MySearchView.this, input_offline.class);
+                intent.putExtra("BusStop", strBusStop);
+                setResult(getIntent().getIntExtra("Key", 1000), intent);
+                finish();
             }
         });
 

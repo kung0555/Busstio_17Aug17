@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class input_offline extends AppCompatActivity {
 
@@ -36,8 +37,16 @@ public class input_offline extends AppCompatActivity {
             Log.d(tag, "requestCode ==> " + requestCode);
             switch (requestCode) {
                 case 1000:
+
+                    TextView textView = (TextView) findViewById(R.id.RecommendinputbusStart);
+                    textView.setText("ป้ายเริ่มต้น ค่ือ " + data.getStringExtra("BusStop"));
+
                     break;
                 case 1100:
+
+                    TextView textView1 = (TextView) findViewById(R.id.RecommendinputbusEnd);
+                    textView1.setText("ป้ายจุดหมาย คือ " + data.getStringExtra("BusStop"));
+
                     break;
             }
 
@@ -53,6 +62,7 @@ public class input_offline extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(input_offline.this, MySearchView.class);
+                intent.putExtra("Key", 1100);
                 startActivityForResult(intent, 1100);
             }
         });
@@ -65,6 +75,7 @@ public class input_offline extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(input_offline.this, MySearchView.class);
+                intent.putExtra("Key", 1000);
                 startActivityForResult(intent, 1000);
 
             }   // onClick
