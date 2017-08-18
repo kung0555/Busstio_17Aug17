@@ -70,15 +70,19 @@ public class loaddata extends AppCompatActivity {
             if (statusHaveDatabase) {
                 //Have Old Data
                 Log.d(tag, "Have Old Data");
-                Intent intent = new Intent(loaddata.this, home.class);
-                startActivity(intent);
-                finish();
+                myIntent();
             } else {
                 //Empty Data and No Internet ==> Load Data from Server
                 Log.d(tag, "Empty Data and No Internet ==> Load Data from Server");
                 Toast.makeText(loaddata.this, "ไม่สามารถทำงานได้", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void myIntent() {
+        Intent intent = new Intent(loaddata.this, home.class);
+        startActivity(intent);
+        finish();
     }
 
     private void refreshSQLite() {
@@ -99,6 +103,14 @@ public class loaddata extends AppCompatActivity {
                 myUpdateSQLite(i, strJSON);
 
             }   // for
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    myIntent();
+                }
+            }, 3000);
 
 
         } catch (Exception e) {
