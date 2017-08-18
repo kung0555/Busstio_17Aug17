@@ -52,7 +52,7 @@ public class input_offline extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(input_offline.this, SearchView.class);
+                Intent intent = new Intent(input_offline.this, MySearchView.class);
                 startActivityForResult(intent, 1100);
             }
         });
@@ -64,7 +64,7 @@ public class input_offline extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(input_offline.this, SearchView.class);
+                Intent intent = new Intent(input_offline.this, MySearchView.class);
                 startActivityForResult(intent, 1000);
 
             }   // onClick
