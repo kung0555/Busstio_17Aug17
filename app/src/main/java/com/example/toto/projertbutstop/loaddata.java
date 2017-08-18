@@ -22,6 +22,8 @@ public class loaddata extends AppCompatActivity {
     private boolean databaseABoolean = true; // Have Data
     private boolean internetABoolean = false; // Internet NOT OK
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //getSupportActionBar().hide(); // ลบแทบด้านบนของแอปพลิเคชั่น
@@ -32,13 +34,22 @@ public class loaddata extends AppCompatActivity {
         myManage = new MyManage(loaddata.this);
 
         //Check Database
-        checkDatabase();
+        String tag = "18AugV1";
+        if (checkDatabase()) {
+            //Have Database
+            Log.d(tag, "Have Database");
 
-        //Check Internet
-        checkInternet();
+        } else {
+            //No Database
+            Log.d(tag, "No Database");
 
-        //Check Special
-        checkSpecial();
+        }
+
+//        //Check Internet
+//        checkInternet();
+//
+//        //Check Special
+//        checkSpecial();
 
 
         //Test Add Value
@@ -151,24 +162,28 @@ public class loaddata extends AppCompatActivity {
         }
     }
 
-    private void checkInternet() {
+    private boolean checkInternet() {
+        boolean result = false;
         ConnectivityManager connectivityManager = (ConnectivityManager) loaddata.this.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
         if ((networkInfo != null) && (networkInfo.isConnected())) {
-            internetABoolean = true;
+            result  = true;
         }
+        return result;
     }
 
-    private void checkDatabase() {
+    private boolean checkDatabase() {
+        boolean result = true; // Have Database
         SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(MyOpenHelper.DATABASE_NAME,
                 MODE_PRIVATE, null);
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM busstopTABLE", null);
         cursor.moveToFirst();
-
+        Log.d("18AugV1", "cusor.count ==> " + cursor.getCount());
         if (cursor.getCount() == 0) {
-            databaseABoolean = false;
+            result = false; // No Database
         }
+        return result;
     }
 
     private void testAddValue() {
